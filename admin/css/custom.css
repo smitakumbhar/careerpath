@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+#loginform{
+    margin-top:35px !important;
+}
+
+a.logo{
+    margin-top:0 !important;
+    width:230px;
+}
+
+.wrapper{
+    margin-top:75px !important;
+}
+
+#view{
+        margin-top : 30px;
+    }
+
+@media only screen and (device-width: 768px) {
+    /* For general iPad layouts */
+    #view{
+        margin-top : 180px;
+    }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+    /* For portrait layouts only */
+    #view{
+        margin-top : 180px;
+    }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+    /* For landscape layouts only */
+    #view{
+        margin-top : 180px;
+    }
+}
+
+
+
