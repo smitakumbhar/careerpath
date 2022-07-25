@@ -1,0 +1,28 @@
+ALTER TABLE `backend_users_master` ADD `admin_status` ENUM('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '0- Unauthorised, 1- Authrised' AFTER `user_type`;
+
+
+ALTER TABLE `backend_users_master` ADD `user_status` ENUM('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '0- Unauthorised, 1- Authrised' AFTER `user_type`;
+
+ALTER TABLE `backend_users_master` CHANGE `user_status` `user_status` ENUM('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '0- Unauthorised, 1- Authorised';
+
+ALTER TABLE `backend_users_master` ADD `user_phone_number` VARCHAR(20) NOT NULL COMMENT 'User Phone number' AFTER `user_password`;
+
+ALTER TABLE `backend_users_master` ADD `admin_paasword_status` CHAR(1) NOT NULL COMMENT 'Y for password changed' AFTER `user_addition_timestamp`;
+
+//11-7-2022
+ALTER TABLE `resume_details` ADD `filename` VARCHAR(50) NOT NULL COMMENT 'resume file name' AFTER `keywords`; 
+
+//20-7-2022
+ALTER TABLE `resume_details` ADD `candidate_mobile_number` VARCHAR(20) NOT NULL COMMENT 'Candidate Mobile Number' AFTER `lastname`; 
+
+ALTER TABLE `resume_details` CHANGE `job_type` `type_of_job` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT 'WFH,WFO,Hybrid'; 
+
+
+ALTER TABLE `job_order_form` ADD `type_of_job` VARCHAR(20) NOT NULL COMMENT 'WFH,WFO,Hybrid' AFTER `position`; 
+
+
+//22-07-2022
+
+ALTER TABLE `resume_details` CHANGE `industry` `industry_id` BIGINT(20) NULL DEFAULT NULL COMMENT 'Industry Id form industries table'; 
+
+ALTER TABLE `resume_details` ADD `location_id` BIGINT(20) NOT NULL COMMENT 'location id from location table' AFTER `industry_id`; 

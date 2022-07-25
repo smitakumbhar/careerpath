@@ -6,10 +6,15 @@ class Report extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
+		if (session_id() == "") session_start();
 
 	}
 	public function cindex($msg=NULL)
 	{
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -132,14 +137,18 @@ class Report extends CI_Controller
 	
 	function change_paging($paging=NULL)
 	{
-
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		 $_SESSION["sess_paging"]=$paging;
 	    redirect("report/cindex");
 	}
 
 	function change_paging_job($paging=NULL)
 	{
-
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		 $_SESSION["sess_paging"]=$paging;
 	    redirect("report/jindex");
 	}
@@ -147,6 +156,9 @@ class Report extends CI_Controller
 	public function jindex($msg=NULL)
 	{
 
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		$msg_display="";
 		$msg_display1="";
 		$msg_err_display="";
@@ -309,6 +321,10 @@ class Report extends CI_Controller
 
 	public function export_joblist()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		 $companyName = "";
           $locationName = "";
           $industryName = "";
@@ -375,6 +391,10 @@ for($i = 0; $i< count($res2);$i++){
 
 	public function export_companylist()
 	{
+			//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+		
 			 $companyName = "";
           $locationName = "";
           $industryName = "";

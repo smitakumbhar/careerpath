@@ -46,27 +46,7 @@
                         margin-top: 5px;
                 }
 
-                #cta{ width:35%!important;
-                float:right!important;}
-
-                .clear{clear:both;}
-
-                .location{background-color: #1fbcd2; color:#ffffff;}
-
-                .depart{background-color: #673fb4; color:#ffffff;}
-
-                .indus{background-color: #673fb4; color:#ffffff;}
-
-
-                @media only screen and (max-width: 480px) {
-                    #cta{ width:90%!important;
-                float:none!important;
-                margin-top:30px; }
-                .jobf{width:90%!important;
-                    float:none!important;}
-                }
-
-
+               
 
         </style>
 
@@ -84,6 +64,12 @@
                                     <span id="back" class="redirect" title="Home"><a href="<?php echo base_url();?>home/index"><< <?= lang("HOME");?></a></span><br><br>
                                    
                                 </header>
+<div id="successdiv"> 
+<?php if($this->session->flashdata('msg'))?>
+   <table align="center">
+        <th><?php echo $this->session->flashdata('msg'); ?></th></table>
+</div>
+
  <?php  if($msg_display!="") {?>
                                     <div align="left" ><table>
         <th>
@@ -98,7 +84,23 @@
                                         <?php echo form_open('job/job_order_book');?>
                                     	 <?php echo form_hidden('flag', $flag);?>
                                          <div class="col-lg-12">
+<label for="cname" class="col-lg-11"><?php echo lang('JOB_ORDER_BOOK_TITLE');?></label>
+                                            <div class="col-lg-11">
 
+                                                <?php $data = array(
+                                'name'        => 'book_title',
+                                'id'          => 'book_title',
+                                'maxlength'   => '100',
+                                'size'        => '40',
+                                'value'        => $book_title,
+                                'class'    => 'form-control',
+                                
+                    );
+                    echo form_input($data);?>
+
+                                             
+                                            </div>
+                                               
                                            
                                             <label for="add" class="col-lg-11"><?= lang("INDUSTRY_NAME");?></label>
                                             <div class="col-lg-11">
@@ -142,6 +144,8 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
 
                                              
                                             </div>
+
+
                                                
                                         <div class="form-group">
                                             <div class="col-lg-9">
@@ -164,4 +168,8 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
             </section>
            
         </section>
-  
+   <script> 
+        setTimeout(function() {
+            $('#successdiv').hide('fast');
+        }, 5000);
+    </script>

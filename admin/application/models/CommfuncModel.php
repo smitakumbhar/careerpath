@@ -7,6 +7,15 @@ class CommfuncModel extends CI_Model
 		parent::__Construct();
 		
     }
+    //check client signup
+	function checkAdminLogin()
+	{
+		if($this->session->userdata('sess_admin_login')!="y")
+		{
+			redirect("login/index");
+			exit;
+		}
+	}
 	
 	
 	function pagination($total_rec, $current_page=0, $perPage, $url_name)

@@ -15,20 +15,25 @@ class LoginModel extends CI_Model
 			$this->session->set_userdata('user_id',$row["user_id"]);
 			$this->session->set_userdata('user_name',$row["user_name"]);
 			$this->session->set_userdata('user_type',$row["user_type"]);
+			$this->session->set_userdata('admin_paasword_status',$row["admin_paasword_status"]);
 			$this->session->set_userdata('admin_approval',$row["admin_approval"]);
 			return TRUE;
 		}
 		return FALSE;
 	}
 
-	//check client signup
-	public function checkAdminLogin()
+	public function get_admin($user_id)
 	{
-		if($this->session->userdata('sess_admin_login')!="y")
-		{
-			redirect("login/loginpage");
-			exit;
-		}
+		$this->db->where("user_id",$user_id);
+		$query = $this->db->get(TABLE_BACKEND_USER_MASTER);
+		return $result = $query->row_array();
+	}
+
+	public function update($data,$user_id)
+	{
+		$this->db->where('user_id',$user_id);
+		$this->db->update(TABLE_BACKEND_USER_MASTER,$data);
+		return true;
 	}
 
 }

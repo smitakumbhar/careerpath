@@ -10,7 +10,6 @@
     <?php $data = array(
         'name'        => 'user_email',
         'id'          => 'user_email',
-        'maxlength'   => '20',
         'class'        => 'form-control',
         'value'        => set_value('user_email' , $user_email),
         'placeholder'  => "Email",

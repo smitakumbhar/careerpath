@@ -109,6 +109,6 @@ define("TABLE_LOCATION", "add_location");
 define("TABLE_RESUME_DETAILS", "resume_details");
 define("TABLE_EMAIL_TEMPLATE", "email_template");
 define("TABLE_CANDIDATE", "candidate_master");
-
+define("TABLE_RIGHTS", "tbl_rights");
 
                                                         

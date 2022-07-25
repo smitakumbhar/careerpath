@@ -11,6 +11,9 @@ class Email extends CI_Controller
 
 	public function index($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -104,7 +107,10 @@ class Email extends CI_Controller
 
 	public function add()
 	{
-		
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if( $this->input->post("flag")=="as")
 		{
 			$data = array(
@@ -150,8 +156,12 @@ class Email extends CI_Controller
 	
 	}
 
-	function delete($id=NULL,$page_no=NULL)
+	public function delete($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -181,6 +191,10 @@ class Email extends CI_Controller
 	
 	public function edit($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$email_model = new EmailModel();
 		if( $this->input->post("flag")=="es")
 		{
@@ -229,6 +243,9 @@ class Email extends CI_Controller
 	// function for send mail
 	public function resume_list($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -396,6 +413,10 @@ class Email extends CI_Controller
 
 	public function sendmail()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$template_list = new EmailModel();
 		$job_order_list = new JobModel();
 
@@ -429,7 +450,7 @@ class Email extends CI_Controller
 				 // code for saving zip
 				 if(is_array($_SESSION['sess_resume_array'])){
 
-				 	$template_list->downloadZipServer($_SESSION['sess_resume_array'],$filepath);
+				$template_list->downloadZipServer($_SESSION['sess_resume_array'],$filepath);
 
 				 }
 
@@ -461,7 +482,7 @@ class Email extends CI_Controller
 		}
 		
 
-		$resume_array = Array();
+		$resume_array = array();
 	
 		if(isset($_POST['resumes_select'])) 
 		{
@@ -470,10 +491,11 @@ class Email extends CI_Controller
 			{
 				// Loop to store and display values of individual checked checkbox.
 				foreach($_POST['selectedResume'] as $selectedfile)
-				{
+				{	
+					
 
-					if (file_exists($selectedfile) && $selectedfile != "." && $selectedfile != "..") 
-					 {
+					if (file_exists(RESUMES_FOLDER.$selectedfile) && $selectedfile != "." && $selectedfile != "..") 
+					 {	//echo $selectedfile;die();
 					       array_push($resume_array, "$selectedfile");
 					 }
 
@@ -493,6 +515,10 @@ class Email extends CI_Controller
 
 	public function get_template_data()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$id = $this->input->post("template_id");
 		if($id)
 		{ 
@@ -503,16 +529,23 @@ class Email extends CI_Controller
 		}	
 	}
 
-	function change_paging($paging=NULL)
+	public function change_paging($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		 $_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("email/index");
 	}
-	function change_paging_resume($paging=NULL)
+	public function change_paging_resume($paging=NULL)
 	{
 
-		 $_SESSION["sess_paging"]=$paging;
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("email/resume_list");
 	}
 

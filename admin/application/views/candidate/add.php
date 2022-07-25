@@ -1,75 +1,28 @@
-
-
-       
-		<style>
-        	.jobf{
-				width:60%!important;
-				margin:1px auto;
-				background-color: #ebebeb;
-               /* background-color: #FFE8D5;*/
-				padding-left:80px;
-				padding-top:15px;
-				padding-bottom:15px;
-				padding-right:5px;
-				border-radius:10px;
-                float:left!important;
-				/*box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);*/
-			}
-			.jobf label{
-				font-size:15px;
-				font-weight:600;
-				margin-bottom:0;
-				margin-top:0;
-				padding-top:7px;
-			}
-			.jobf input[type="text"]{
-				border:1px solid #ccc;
-			}
-			.jobf textarea{
-				border:1px solid #ccc;
-			}
-			.jobf select{
-				border:1px solid #ccc;
-			}
-                        #main-content{
-                                background-color: #FFFFFF;
-                        }
-                        .btn.btn-success.fileinput-button {
-                            background-color: #6dbb4a;
-                            margin-left: 2.5%;
-                            margin-top: 1%;
-                        }
-                          #addinputtag{
-                         float:left;width:74%;
-                         }
-                         input[type=file] {
-
-                        margin-top: 5px;
-                }
-
-                #cta{ width:35%!important;
-                float:right!important;}
-
-                .clear{clear:both;}
-
-                .location{background-color: #1fbcd2; color:#ffffff;}
-
-                .depart{background-color: #673fb4; color:#ffffff;}
-
-                .indus{background-color: #673fb4; color:#ffffff;}
-
-
-                @media only screen and (max-width: 480px) {
-                    #cta{ width:90%!important;
-                float:none!important;
-                margin-top:30px; }
-                .jobf{width:90%!important;
-                    float:none!important;}
-                }
-
-
-
-        </style>
+<style>
+    .jobf{
+    	width:60%!important;
+    	margin:1px auto;
+    	background-color: #ebebeb;
+       /* background-color: #FFE8D5;*/
+    	padding-left:80px;
+    	padding-top:15px;
+    	padding-bottom:15px;
+    	padding-right:5px;
+    	border-radius:10px;
+        float:left!important;
+    	/*box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);*/
+    }
+    .jobf label{
+    	font-size:15px;
+    	font-weight:600;
+    	margin-bottom:0;
+    	margin-top:0;
+    	padding-top:7px;
+    }
+    .jobf input[type="text"]{
+    	border:1px solid #ccc;
+    }        
+</style>
         <section id="container" class="">
             <section id="main-content">
                 <section class="wrapper">

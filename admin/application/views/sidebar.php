@@ -1,26 +1,36 @@
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse ">
+          <div id="sidebar"  class="nav-collapse"  style="width:17%">
+
+            <?php
+            $rights = new RightsModel();
+            $admin_rights=$rights->checkAdminRights();
+      ?>
+
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
+                <?php if(in_array(1,$admin_rights)) {?>
                   <li>
                       <a class="active" href="<?php echo base_url();?>home/index">
                           <i class="fa fa-dashboard"></i>
                           <span>Dashboard</span>
                       </a>
                   </li><br>
-                  <?php if($_SESSION['user_type'] == 'Super Admin'){ ?>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-laptop"></i>
-                          <span><?= lang("USER_MANAGEMENT");?></span>
+                <?php }?>
+
+                   <?php if(in_array(2,$admin_rights)) {?>
+                   <li class="sub-menu">
+                      <a href="<?php echo base_url();?>rights/index">
+                          <i class="fa fa-cogs"></i>
+                          <span><?= lang("ADMIN_MANAGEMENT");?></span>
                       </a>
                       <ul class="sub">
-                          <li><a href="<?php echo base_url();?>user/add">Add User</a></li>
-                          <li><a  href="<?php echo base_url();?>user/index/nosearch">View User List</a></li>
+                          <li><a href="<?php echo base_url();?>rights/add"><?php echo lang("ADD_ADMIN_USER"); ?></a></li>
+                          <li><a  href="<?php echo base_url();?>user/index/nosearch"><?php echo lang("VIEW_ADMIN_USERS"); ?></a></li>
                       </ul>
+                   <?php }?>   
                   </li>
-                  <?php } ?>
+                    <?php if(in_array(6,$admin_rights)) {?>    
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-book"></i>
@@ -32,7 +42,8 @@
                           <li><a href="<?php echo base_url();?>job/job_order_book">Digital Job Order Book</a></li>
                       </ul>
                   </li>
-
+                   <?php }?>
+   <?php if(in_array(10,$admin_rights)) {?>       
       <li class="sub-menu">
           <a href="javascript:;" >
               <i class="fa fa-cogs"></i>
@@ -48,10 +59,15 @@
 
 <li><a href="<?php echo base_url();?>resume/bulk_filelist"><?= lang("BULK_UPLOAD_LIST");?></a></li>
 
-<li><a href="<?php echo base_url();?>search"><?= lang("SEARCH");?></a></li>
-               
+<li><a href="<?php echo base_url();?>search/folder_index/nosearch"><?= lang("SEARCH");?></a></li>
+
+<li><a href="<?php echo base_url();?>email/resume_list/nosearch"><?= lang("SEND_EMAIL");?></a></li>
+
+         
           </ul>
       </li>
+       <?php }?>
+        <?php if(in_array(14,$admin_rights)) {?> 
 <li class="sub-menu">
   <a href="javascript:;" >
       <i class="fa fa-tasks"></i>
@@ -68,7 +84,8 @@
     
     <li><a href="<?php echo base_url();?>industry/index/nosearch"><?= lang("VIEW_INDUSTRY");?></a></li>
   </ul>
-</li>
+</li><?php }?>
+<?php if(in_array(18,$admin_rights)) {?> 
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-foursquare"></i>
@@ -82,23 +99,8 @@
 
                       </ul>
                   </li>
-
-<li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-plus-square-o"></i>
-                          <span><?= lang("CANDIDATE_MASTERS");?></span>
-                      </a>
-                      <ul class="sub">
-                          
-                        <li><?php echo anchor( 'candidate/index/nosearch', lang('VIEW_CANDIDATES'));?>
-                        </li>
-                        <li><?php echo anchor( 'candidate/view_candidates/nosearch', lang('SEND_EMAIL'));?>
-                        </li>
-                          
-                       </ul>
-                  </li>
-                  
-
+<?php }?>
+<?php if(in_array(19,$admin_rights)) {?> 
 
                    <li class="sub-menu">
                       <a href="javascript:;" >
@@ -112,21 +114,19 @@
                           
                        </ul>
                   </li>
+ <?php }?>                 
+   
+         
+ <?php if(in_array(28,$admin_rights)) {?> 
                   
-                <li>
-                      <a href="<?php echo base_url();?>form/formdownloads">
-                          <i class="fa fa-download"></i>
-                          <span><?= lang("DOWNLOAD_FORMS");?></span>
-                      </a>
-                  </li>
-
-                    <li>
-
-                      <a href="<?php echo base_url();?>email/resume_list/nosearch">
-                          <i class="fa fa-mail-reply-all"></i>
-                          <span><?= lang("SEND_EMAIL");?></span>
-                      </a>
-                  </li>
+<li>
+    <a href="<?php echo base_url();?>form/formdownloads">
+      <i class="fa fa-download"></i>
+      <span><?= lang("DOWNLOAD_FORMS");?></span>
+    </a>
+</li>
+<?php }?> 
+  
               </ul>
               <!-- sidebar menu end-->
           </div>

@@ -2,12 +2,12 @@
 
 		<style>
         	.jobf{
-				width:88% !important;
+				width:100% !important;
 				margin:1px auto;
 				background-color: #ebebeb;
   /*            background-color: #FFE8D5;*/
 
-				padding-left:80px;
+				padding-left:10px;
 				padding-top:15px;
 				padding-bottom:15px;
 				padding-right:5px;
@@ -53,16 +53,31 @@
                 <?php echo form_hidden('formID', $formID);?>
                 <?php echo form_hidden('old_file', $job_desc);?>
                                     
-                                        <div class="col-lg-12">
-                                            <label for="position" class="col-lg-11">Position&nbsp;<span class="star">*</span></label>
+                                        <div class="col-lg-6">
+                                            <label for="position" class="col-lg-9">Position&nbsp;<span class="star">*</span></label>
                                             <div class="col-lg-11">
                                                 <input type="text" class="form-control" id="position" name="position" value="<?= $position?>" >
                                                 <?php echo form_error('position');?>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <label for="jobtype" class="col-lg-10">Job Type</label>
+                                            <label for="title" class="col-lg-10">Title&nbsp;<span class="star">*</span></label>
                                             <div class="col-lg-10">
+                                                <input type="text" class="form-control" id="title" name="title" value="<?= $title;?>"><?php echo form_error('title');?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                         <label for="dob" class="col-lg-11">Type Of Job&nbsp;<span class="star">*</span></label>
+                                            <div class="col-lg-11">
+<?php echo form_radio(array('name' => 'type_of_job', 'value' => 'WFH', 'id' => 'type_of_job', 'checked' => ('WFH' == $type_of_job))).form_label('WFH', 'wfh');?>&nbsp;&nbsp;&nbsp;
+<?php echo form_radio(array('name' => 'type_of_job', 'value' => 'WFO', 'id' => 'type_of_job', 'checked' => ('WFO' == $type_of_job))).form_label('WFO', 'wfo');?>&nbsp;&nbsp;&nbsp;
+<?php echo form_radio(array('name' => 'type_of_job', 'value' => 'Hybrid', 'id' => 'type_of_job', 'checked' => ('Hybrid' == $type_of_job))).form_label('Hybrid', 'hybrid');?>
+<?php echo form_error('type_of_job');?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <label for="dob" class="col-lg-11">Job Type</label>
+                                            <div class="col-lg-11">
                                                     <select id="jobtype" name="jobtype" class="form-control m-bot15">
                                                         <?php 
 foreach(JOB_TYPE_ARRAY as $key => $jobtype){ 
@@ -74,9 +89,9 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <label for="industry" class="col-lg-10">Industry</label>
-                                            <div class="col-lg-10">
-                                                    <select id="industry" name="industry" class="form-control m-bot15">
+                                            <label for="dob" class="col-lg-11">Industry</label>
+                                            <div class="col-lg-11">
+                                                    <select id="industry" name="industry" class="form-control">
  <option value="">Select Industry</option>
  <?php foreach($industry_list as $industry_arr):?>
                    <option value="<?= $industry_arr['id']; ?>" <?php echo ($industry_arr['id'] == $industry ) ? 'selected' :''?>> <?= $industry_arr['industry_name']; ?> </option>
@@ -84,10 +99,14 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                                     </select>
                                             </div>
                                         </div>
+
+
+
+
                                         <div class="col-lg-6">
                                             <label for="dob" class="col-lg-10">Date</label>
                                             <div class="col-lg-10" id="dateDiv">
-                                                <input type="date" name="date" id="date" value="<?= $date?>"  />                                             </div>
+                                                <input class="form-control" type="date" name="date" id="date" value="<?= $date?>"  />                                             </div>
                                         </div>
 
                                         <div class="col-lg-6">
@@ -96,6 +115,8 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                                 <input type="text" class="form-control" id="cons" name="cons" value="<?= $cons?>" >
                                             </div>
                                         </div>
+ 
+                                              
                                         <div class="col-lg-6">
                                             <label for="contact_name" class="col-lg-10">Contact Name&nbsp;<span class="star">*</span></label>
                                             <div class="col-lg-10">
@@ -108,12 +129,7 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                                 <input type="text" class="form-control" id="email" name="email" value="<?= $email_id?>">
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <label for="title" class="col-lg-10">Title&nbsp;<span class="star">*</span></label>
-                                            <div class="col-lg-10">
-                                                <input type="text" class="form-control" id="title" name="title" value="<?= $title;?>"><?php echo form_error('title');?>
-                                            </div>
-                                        </div>
+                                      
                                         <div class="col-lg-6">
                                             <label for="company_name" class="col-lg-10">Company Name</label>
                                             <div class="col-lg-10">

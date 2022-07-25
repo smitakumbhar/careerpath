@@ -6,11 +6,15 @@ class Department extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
+		if(session_id() == "") session_start();
 		
 	}
 
 	public function index($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -180,6 +184,10 @@ class Department extends CI_Controller
 
 	public function add()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		
 		if( $this->input->post("flag")=="as")
 		{
@@ -248,8 +256,12 @@ class Department extends CI_Controller
 	}
 
 
-	function delete($id=NULL,$page_no=NULL)
+	public function delete($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -279,6 +291,10 @@ class Department extends CI_Controller
 
 	public function edit($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$department_model = new DepartmentModel();
 		if( $this->input->post("flag")=="es")
 		{
@@ -337,8 +353,11 @@ class Department extends CI_Controller
 
 	}
 
-	function change_paging($paging=NULL)
+	public function change_paging($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$_SESSION["sess_paging"]=$paging;
 	    redirect("department/index");

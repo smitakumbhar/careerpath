@@ -32,7 +32,6 @@ $lang["VIEW_INDUSTRY"] = "View Industry List";
 $lang["MASTERS"] = "Masters";
 $lang["DOWNLOAD_FORMS"] = "Download Forms";
 $lang["NO_RECORD_FOUND"] = "No Records Found";
-
 $lang["SUBMIT"] = "SUBMIT";
 
 
@@ -88,7 +87,7 @@ $lang["RESET"]="Reset";
 $lang["BACK"]="Back";
 $lang["HOME"]="Home";
 $lang["CP_LOGIN"]="CareerPath Backend - Login";
-
+$lang["CP_LOGIN_PASS"]="CareerPath Backend - Change Password";
 $lang["SR_NO"]="Sr.No";
 $lang["EMAIL"]="Email";
 $lang["ADD_USER"]="Add User";
@@ -188,6 +187,34 @@ $lang["VIEW_MY_DESK"]="View My Desk";
 $lang["VIEW_USER_DESK"]="View User Desk";
 $lang["SHARE_BOOK"]="Share Book";
 
+$lang["DASHBOARD"] = "Dashboard";
+$lang["ADMIN_MANAGEMENT"] = "Admin Management";
+$lang["JOBS"] = "Jobs";
+$lang["CANDIDATES"] = "Candidates";
+$lang["VIEW_ADMIN_USERS"] = "View Admin Users";
+$lang["ADD_ADMIN_USER"] = "Add Admin User";
+$lang["USER_PHONE_NUMBER"] = "Phone Number";
+$lang["COMPANY_REPORTS"] = "Company Reports";
+$lang["JOB_REPORTS"] = "Job Reports";
+$lang["EMAIL_TEMPLATES"] = "Email Templates";
+$lang["HOME_PAGE"] = "Home Page";
+$lang["JOB_ORDER_BOOK_TITLE"] = "Job Order Book Title";
+
+
+
+// For Permission Module 
+$lang["ADMIN_MENU"][1]="Dashboard"; // dashboard index
+$lang["ADMIN_MENU"][2]="Admin Management"; // AM Index
+$lang["ADMIN_MENU"][6]= "Jobs"; // Job Index
+$lang["ADMIN_MENU"][10]="Resumes"; // Resumes Index
+$lang["ADMIN_MENU"][14]="Companies"; //Company Index
+$lang["ADMIN_MENU"][18]="Reports"; // Reports Index
+$lang["ADMIN_MENU"][19]="Mastres"; // Masters Index
+//$lang["ADMIN_MENU"][23]="Candidates"; // Candidates Index
+$lang["ADMIN_MENU"][27]="Send Mail"; // Send Mail Index
+$lang["ADMIN_MENU"][28]="Download Forms"; // Download forms
+
+$lang["MATCH_RESUMES"] = "Match Resumes";
 
 
 ?>

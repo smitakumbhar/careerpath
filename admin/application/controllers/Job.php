@@ -6,10 +6,14 @@ class Job extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
+		if (session_id() == "") session_start();
 	}
 
 	public function index($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -168,14 +172,18 @@ class Job extends CI_Controller
 
 	public function add()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if( $this->input->post("flag")=="as")
 		{
 			if(isset($_FILES['upload']['name']) && !empty($_FILES['upload']["name"]))
 			{
 
 				$savefile = new JobModel();
-				$filepath = $savefile->Storefiles('upload','description');
-
+				$file_array = $savefile->Storefiles('upload','description');
+				$filepath = $file_array["filepath"];
 			}
 			else{
 				$filepath = "";
@@ -186,6 +194,7 @@ class Job extends CI_Controller
 			$data = array(
 					'user_id' => $_SESSION['user_id'], 
 					'position' => $this->input->post("position"),
+					'type_of_job' => $this->input->post("type_of_job"),
 					'date' => $date,
 					'cons' => $this->input->post("cons"),
 					'company_id' => $this->input->post("company_name"),
@@ -219,9 +228,9 @@ class Job extends CI_Controller
 		$this->form_validation->set_rules('contact_name','Contact Name','trim|required');
 		$this->form_validation->set_rules('title','Title','trim|required');
 		$this->form_validation->set_rules('cell_number','Cell Number','trim|required'); 
-	//	$this->form_validation->set_rules('reason','Title','trim|required');
+		$this->form_validation->set_rules('type_of_job','Type Of Job','required');
 		$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
-
+//echo "<pre>";print_r($data);die();
 		if ($this->form_validation->run() == TRUE)
 		{
 			
@@ -240,6 +249,7 @@ class Job extends CI_Controller
 			$data = array(
 
 					'position' => "",
+					'type_of_job' => "",
 					'date' => "",
 					'cons' => "",
 					'company_id' => "",
@@ -280,7 +290,7 @@ class Job extends CI_Controller
 		$company_list = new CompanyModel();
 		$data["company_list"] = $company_list->getCompanies();
 		$location_list = new LocationModel();
-		$data["location_list"] = $location_list->getlocations();
+		$data["location_list"] = $location_list->getLocations();
 		$data['page_no'] = 0;
 		$data['page_title'] = $this->lang->line("ADD_JOB");
 		$data['view_file'] = 'job/add';
@@ -289,8 +299,12 @@ class Job extends CI_Controller
 	
 	}
 	
-	function delete($id=NULL,$page_no=NULL,$filename=Null)
+	public function delete($id=NULL,$page_no=NULL,$filename=Null)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -332,15 +346,19 @@ class Job extends CI_Controller
 
 	public function edit($formID=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$add_job = new JobModel();
-		
 		if( $this->input->post("flag")=="es")
 		{
 
 			if(isset($_FILES['upload']["name"]) && !empty($_FILES['upload']["name"]))
 			   {
 			   		$savefile = new JobModel();
-					$new_filepath = $savefile->Storefiles('upload','description');
+					$file_array = $savefile->Storefiles('upload','description');
+					$new_filepath = $file_array["filepath"];
 
 			    if ($new_filepath)
 			    {
@@ -371,6 +389,7 @@ class Job extends CI_Controller
 			$data = array(
 					'user_id' => $_SESSION['user_id'], 
 					'position' => $this->input->post("position"),
+					'type_of_job' => $this->input->post("type_of_job"),
 					'date' => $date,
 					'cons' => $this->input->post("cons"),
 					'company_id' => $this->input->post("company_name"),
@@ -404,7 +423,7 @@ class Job extends CI_Controller
 		$this->form_validation->set_rules('contact_name','Contact Name','trim|required');
 		$this->form_validation->set_rules('title','Title','trim|required');
 		$this->form_validation->set_rules('cell_number','Cell Number','trim|required'); 
-	//	$this->form_validation->set_rules('reason','Title','trim|required');
+		$this->form_validation->set_rules('type_of_job','Type Of Job','required');
 		$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
 
 	
@@ -454,6 +473,9 @@ class Job extends CI_Controller
 
 	public function ViewJob($id = 0)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$view_job= new JobModel();
 		$data['job_data'] =  $view_job->view_job($id);
@@ -475,6 +497,10 @@ class Job extends CI_Controller
 	
 	public function job_order_book($msg=NULl)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$where="";
 		$where1="";
 		$where2="";
@@ -516,7 +542,7 @@ class Job extends CI_Controller
 			$where2=" AND ".$where2;
 
 
-		$main_sql="SELECT t1.*,t2.industry_name as industry_name,t2.id,t3.company_name as company_name,t4.location_name as location_name,t5.department_name as department_name FROM ".TABLE_JOB_ORDER_FORM." t1,".TABLE_INDUSTRIES." t2, ".TABLE_COMPANY_DETAILS." t3,".TABLE_LOCATION." t4,".TABLE_DEPARTMENT." t5 WHERE t1.industry=t2.id AND t1.company_id=t3.id AND t1.location_name=t4.id AND t1.department_name=t5.id";
+		 $main_sql="SELECT t1.*,t2.industry_name as industry_name,t2.id,t3.company_name as company_name,t4.location_name as location_name,t5.department_name as department_name FROM ".TABLE_JOB_ORDER_FORM." t1,".TABLE_INDUSTRIES." t2, ".TABLE_COMPANY_DETAILS." t3,".TABLE_LOCATION." t4,".TABLE_DEPARTMENT." t5 WHERE t1.industry=t2.id AND t1.company_id=t3.id AND t1.location_name=t4.id AND t1.department_name=t5.id";
 
 			
 			$order_by=' ORDER BY t1.formID asc '; 
@@ -526,6 +552,7 @@ class Job extends CI_Controller
 			$data_job=$query->result_array();
 			$data['job_data'] = $data_job;
 			$data["flag"]="as";
+			$_SESSION['job_order_book_title']= $this->input->post("book_title");
 			$_SESSION['job_data']= $data_job;
 			redirect(base_url('job/digital_book'));
 			
@@ -536,6 +563,7 @@ class Job extends CI_Controller
 					'industry' => "",
 					'job_type' => "",
 					'keywords' => "",
+					'book_title' => "",
 					'flag' => "as",
 					);
 		}
@@ -550,7 +578,10 @@ class Job extends CI_Controller
 	}
 	public function digital_book()
 	{
-	//	echo "<pre>";print_r($_SESSION['job_data']);die();
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if(!empty($_SESSION['job_data']))
 		{
 			$data['view_file'] = 'job_order_book/digital_book';
@@ -566,13 +597,20 @@ class Job extends CI_Controller
 
 	public function change_paging($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		$_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("job/index");
 	}
 
 	public function download_book()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$html="";
 		$limit=1;
 		$pdfFilename = "JobOrderBook.pdf";
@@ -580,7 +618,39 @@ class Job extends CI_Controller
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		$pdf->setTitle("Job Order Book");
+
 		$pdf->AddPage();
+     	$pdf->Image(base_url().'/images/logo.png',30);
+     	$pdf->Ln ( 50 );
+     //	$pdf->setImageScale ( PDF_IMAGE_SCALE_RATIO );
+
+     	$html_content = '<div style="text-align:center;margin-battom:10px; font-size: 10px;font-family: arial">&copy; Copyright Careerpaths NW</div>';    
+
+
+		if($_SESSION['job_order_book_title']!="")
+		{
+			
+            $html .='<table align="center">
+            <tr><td align="center" style="font-size:60px;font-weight:bold;
+    font-family: Arial ;">'.$_SESSION['job_order_book_title'].'</td></tr>
+             <tr><td style="font-size:60px;">&nbsp;</td></tr>
+            <tr><td align="center" style="font-size:60px;">&nbsp;</td></tr>
+        </table>';
+        $html .=$html_content;
+        $html.='<br pagebreak="true"/>';
+        }
+        else
+        {
+        	$html .='<table align="center">
+		            <tr><td align="center" style="font-size:60px;">JOB</td></tr>
+		             <tr><td style="font-size:60px;">ORDER</td></tr>
+		            <tr><td align="center" style="font-size:60px;">BOOK</td></tr>
+		       		 </table>';
+		    $html .=$html_content;
+		    $html.='<br pagebreak="true"/>';
+    	 }
+
+		
 		if(!empty($_SESSION['job_data']))
 		{
 				
@@ -624,8 +694,8 @@ class Job extends CI_Controller
 				</table>
 			</div><br pagebreak="true"/>';
 
-			 if($limit1==0)
-          		$html.='<br pagebreak="true"/>';
+		//	 if($limit1==0)
+          //		$html.='<br pagebreak="true"/>';
 
 		}
 		
@@ -644,6 +714,9 @@ class Job extends CI_Controller
 	// send flip book in email
 	public function share_book()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		if($this->input->post('flag') == 'send')
 		{
@@ -656,6 +729,37 @@ class Job extends CI_Controller
 
 			$pdf->setTitle("Job Order Book");
 			$pdf->AddPage();
+
+			$pdf->Image(base_url().'/images/logo.png',30);
+     	$pdf->Ln ( 50 );
+     //	$pdf->setImageScale ( PDF_IMAGE_SCALE_RATIO );
+
+     	$html_content = '<div style="text-align:center;margin-battom:10px; font-size: 10px;font-family: arial">&copy; Copyright Careerpaths NW</div>';    
+
+
+		if($_SESSION['job_order_book_title']!="")
+		{
+			
+            $html .='<table align="center">
+            <tr><td align="center" style="font-size:60px;font-weight:bold;
+    font-family: Arial ;">'.$_SESSION['job_order_book_title'].'</td></tr>
+             <tr><td style="font-size:60px;">&nbsp;</td></tr>
+            <tr><td align="center" style="font-size:60px;">&nbsp;</td></tr>
+        </table>';
+        $html .=$html_content;
+        $html.='<br pagebreak="true"/>';
+        }
+        else
+        {
+        	$html .='<table align="center">
+		            <tr><td align="center" style="font-size:60px;">JOB</td></tr>
+		             <tr><td style="font-size:60px;">ORDER</td></tr>
+		            <tr><td align="center" style="font-size:60px;">BOOK</td></tr>
+		       		 </table>';
+		    $html .=$html_content;
+		    $html.='<br pagebreak="true"/>';
+    	 }
+
 			if(!empty($_SESSION['job_data']))
 			{
 					
@@ -698,8 +802,8 @@ class Job extends CI_Controller
 					</table>
 				</div><br pagebreak="true"/>';
 
-				 if($limit1==0)
-	          		$html.='<br pagebreak="true"/>';
+				// if($limit1==0)
+	          	//	$html.='<br pagebreak="true"/>';
 
 			}
 			
@@ -725,15 +829,145 @@ class Job extends CI_Controller
 				}
 				// delete file when mail will be send
 				unlink($filepath);
+				$this->session->set_flashdata('msg', lang("MAIL_SENT_SUCCESS"));
+				redirect("job/job_order_book");
 						
 			}
 	} //end fo flag send
 
 	$data['view_file'] = 'job_order_book/share_book';
 	$data['page_title'] = $this->lang->line("SHARE_BOOK");
-	$this->load->view('book_layout',$data);
+	$this->load->view('layout',$data);
 
 }
+
+// function for matching resumes
+	public function match_resumes($id,$msg=NULL)
+	{
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
+		$msg_display="";
+		$limit ="";
+		
+		if($msg =="nosearch")
+		{
+
+			$this->session->set_userdata('sess_jobtype','');
+			$this->session->set_userdata('sess_search_wh','');
+			$this->session->set_userdata('sess_industry','');
+			$this->session->set_userdata('sess_search_wh1','');
+			$this->session->set_userdata('sess_location','');
+			$this->session->set_userdata('sess_search_wh2','');
+			$_SESSION["sess_paging"] = PER_PAGE_RECORDS;
+
+		}
+		
+		$where="";
+		$where1="";
+		$where2="";
+
+
+		if( $this->input->post("flag")=="search")
+		{
+			
+			if($this->input->post("type_of_job")!="")
+			{
+				$where=' t2.type_of_job = "'.$this->input->post("type_of_job").'" ';
+				$this->session->set_userdata('sess_jobtype',$this->input->post("type_of_job"));
+			}
+			else
+				$this->session->set_userdata('sess_jobtype','');
+
+			if($this->input->post("industry_id")!="")
+			{
+				$where1=' t2.industry_id = "'.$this->input->post("industry_id").'" ';
+				$this->session->set_userdata('sess_industry',$this->input->post("industry_id"));
+			}
+			else
+				$this->session->set_userdata('sess_industry','');
+
+			if($this->input->post("location_id")!="")
+			{
+				$where2=' t2.location_id = "'.$this->input->post("location_id").'" ';
+				$this->session->set_userdata('sess_location',$this->input->post("location_id"));
+			}
+			else
+				$this->session->set_userdata('sess_location','');
+
+			$this->session->set_userdata('sess_search_wh',$where);
+			$this->session->set_userdata('sess_search_wh1',$where1);
+			$this->session->set_userdata('sess_search_wh2',$where2);
+		}
+		
+		if($this->session->userdata('sess_search_wh')!="")
+			$where=" AND ".$this->session->userdata('sess_search_wh');
+
+		if($this->session->userdata('sess_search_wh1')!="")
+			$where1=" AND ".$this->session->userdata('sess_search_wh1');
+
+		if($this->session->userdata('sess_search_wh2')!="")
+			$where2=" AND ".$this->session->userdata('sess_search_wh2');
+
+		 $main_sql="SELECT t1.*,t2.*,t3.location_name as location_name,t4.industry_name as industry_name FROM ".TABLE_JOB_ORDER_FORM." t1,".TABLE_RESUME_DETAILS." t2,".TABLE_LOCATION." t3,".TABLE_INDUSTRIES." t4 WHERE (t1.formID = t2.jobnumber OR t1.location_name=t2.location_id OR t1.industry = t2.industry_id OR t1.type_of_job = t2.type_of_job) AND t2.location_id=t3.id AND t2.industry_id = t4.id";
+
+		$sql=$main_sql.$where.$where1.$where2;
+
+		$query = $this->db->query($sql);
+		$total_count = $query->num_rows();
+
+		if( $this->input->post("flag")=="search" && $query->num_rows()==0)
+			$msg_display=$this->lang->line("NO_RECORD_FOUND");
+
+		$segments = array('job', 'match_resumes');
+		$url_name=site_url($segments);
+		$per_page_records=((@$_SESSION["sess_paging"]=="All")?$total_count:@$_SESSION["sess_paging"]);
+		$comm_model = new Commfuncmodel();
+		$pagination=$comm_model->pagination($total_count,$this->uri->segment(3),$per_page_records,$url_name);
+		/*******************End Pagination*******************/
+		$page_no=(int)$this->uri->segment(3);
+		if( empty($page_no) || ( $page_no<1 ) )
+			$nextrecord = 0 ;
+		else
+			$nextrecord = ($page_no-1) * @$_SESSION["sess_paging"] ;
+		
+		if(@$_SESSION["sess_paging"]!="All")
+		{
+			$limit_start=$nextrecord;
+			$limit_end=$_SESSION["sess_paging"];
+			$limit=" LIMIT ".@$limit_start.",".@$limit_end;
+		}
+		((@$_SESSION["sess_paging"]==PER_PAGE_RECORDS)?PER_PAGE_RECORDS:@$_SESSION["sess_paging"]);	
+
+
+		$order_by=' ORDER BY t2.firstname asc '; 
+		
+		$sql=$main_sql.$where.$where1.$where2.$order_by.$limit;//die();
+		$query = $this->db->query($sql);
+				
+		$data_job=$query->result_array();
+	//	echo "<pre>";print_r($data_job);//die();
+		$data['msg_display'] = $msg_display;
+		$data['resume_data'] = $data_job;
+		$data['id'] =$id;
+		$data['page_no'] = $page_no;
+		$data['pagination'] =$pagination;
+		$data['nextrecord'] = $nextrecord;
+		$data['total_count'] = @$total_count;
+		
+		$industry_list = new IndustryModel();
+		$data["industry_list"] = $industry_list->getIndustries();
+		$location_list = new LocationModel();
+		$data["location_list"] = $location_list->getLocations();
+
+		$data['paging_arr']= lang("paging_array");
+		$data['view_file'] = 'job/matchResumes';
+		$data['page_title'] = $this->lang->line("VIEW_RESUMES");
+		$this->load->view('layout',$data);
+	}
+
 
 
 }

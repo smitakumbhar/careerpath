@@ -94,19 +94,12 @@
                                          <div class="col-lg-12">
 
                                             <label for="add" class="col-lg-11"><?= lang("SELECTED_RESUMES");?></label> 
-                                            <?php 
+                                            <?php //echo "<pre>";print_r($_SESSION['sess_resume_array']);
                                             if(is_array($_SESSION['sess_resume_array'])){ $count=1;
-                                            foreach($_SESSION['sess_resume_array'] as $key => $value){
-
-                                                if (strstr($value, 'bulkupload/')) { 
-                                                   $filename = str_replace('bulkupload/',"",$value);
-                                                }elseif (strstr($value, 'resumes/')) {
-                                                    $filename = str_replace('resumes/',"",$value);
-                                                }
-                                                ?>
+                                            foreach($_SESSION['sess_resume_array'] as $key => $value){?>
 
                                                  <?php echo form_hidden('resumes[]', $value);?>
-                                           <label for="add" class="col-lg-11"> <?= $count;?>)&nbsp;<?= $filename;?></label>
+                                           <label for="add" class="col-lg-11"> <?= $count;?>)&nbsp;<?php echo $value;?></label>
                                         <?php  $count++;  }
                                   }?><br>
 

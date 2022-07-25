@@ -4,7 +4,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class CandidateModel extends CI_Model
 {
 
-    public function getCandidate() 
+	 public function getCandidate() 
+    {
+    	
+    	$this->db->select('id'); 
+    	$this->db->select('firstname');
+    	$this->db->select('lastname');  
+    	$this->db->order_by('firstname','asc'); 
+		$query = $this->db->get(TABLE_RESUME_DETAILS);
+		$data_candidate=$query->result_array();
+		return $data_candidate;
+    }
+
+    public function getCandidate_old() 
     {
     	
     	$this->db->select('id'); 
@@ -44,7 +56,6 @@ class CandidateModel extends CI_Model
 		$this->db->delete(TABLE_CANDIDATE);
 	   	return TRUE;
 	}
-
-
 }
+
 ?>

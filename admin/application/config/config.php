@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/CI3Project/admin/';
+$config['base_url'] = 'http://localhost/Careerpath/admin/';
 
 //$config['base_url'] = 'http://1zp.0ad.mywebsitetransfer.com/admin/';
 

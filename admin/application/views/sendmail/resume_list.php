@@ -18,21 +18,15 @@
                                 <div class="panel-body form-horizontal">
                                 	 <div class="form-group">
                                             <label class="col-lg-1 col-sm-2">Date From</label>
-                                            <div class="col-lg-2">
-                                            <input type="date"name="fromdate" id="fromdate" value="<?= @$_SESSION['sess_fromdate']?>"  />
+                                            <div class="col-lg-3">
+                                            <input type="date" name="fromdate" id="fromdate" class="form-control" value="<?= @$_SESSION['sess_fromdate']?>"/>
                                             </div>
                                             <label class="col-lg-1 col-sm-2" style="width:3%">Date To</label>
-                                            <div class="col-lg-2">
-                                            <input type="date" name="todate" id="todate" value="<?= @$_SESSION['sess_todate']?>"  />
+                                            <div class="col-lg-3">
+                                            <input type="date" name="todate" id="todate" class="form-control" value="<?= @$_SESSION['sess_todate']?>"  />
                                             </div>
 
-                <label for="jobtype" class="col-lg-1 col-sm-2"> Resume Keywords</label>
-                                            <div class="col-lg-2">
-                                                 <input class="form-control"  size="16" type="text" id="txtkeyword" name="txtkeyword" value="<?= @$_SESSION['sess_keyword']?>"/>
-
-                                            <label class="col-lg-1 col-sm-2"></label>
-                                           
-                                            </div>
+              
                                         </div>
                                         
                                 </div>
@@ -43,8 +37,15 @@
                                             <div class="col-lg-3">
                                                 <input class="form-control"  size="16" type="text" id="firstname" name="firstname" value="<?= @$_SESSION['sess_name']?>"/>
                                             </div>
+                                              <label for="jobtype" class="col-lg-1 col-sm-2"> Resume Keywords</label>
+                                            <div class="col-lg-2">
+                                                 <input class="form-control"  size="16" type="text" id="txtkeyword" name="txtkeyword" value="<?= @$_SESSION['sess_keyword']?>"/>
+
                                             <label class="col-lg-1 col-sm-2"></label>
-                                            <div class="col-lg-8">
+                                           
+                                            </div>
+                                            <label class="col-lg-1 col-sm-2"></label>
+                                            <div class="col-lg-11">
                                                  <button type="submit" class="btn name_serachbutton" style="background-color:#342f29; color:#FFF">Search</button>
                                             </div>
                                         </div>
@@ -79,8 +80,9 @@
                                                     </th>
                                                     <th>Upload Type</th>
                                                     <th><i class="fa fa-calendar"></i> Date</th>
-                                                    <th><i class="fa fa-bookmark"></i> First Name</th>
-                                                    <th><i class="fa fa-bookmark"></i> Last Name</th>
+                                                    <th><i class="fa fa-bookmark"></i> Name</th>
+                                                    <th><i class="fa fa-bookmark"></i> Contact Number</th>
+                                                    <th><i class="fa fa-bookmark"></i> Email</th>
 
                                                     <th><i class="fa fa-bookmark"></i> Resume </th>
                                                     <th> Placed </th>
@@ -100,40 +102,23 @@ foreach($resume_data as $v) {
   ?>
 <tr>
 <th><?php echo $record_no;?></th>
- <th><input type="checkbox" name="selectedResume[]" id ="selectedResume[]" class="selectedResume" value=<?= $v["filepath"]; ?>></th>
+ <th><input type="checkbox" name="selectedResume[]" id ="selectedResume[]" class="selectedResume" value=<?php echo $v["filename"]; ?>></th>
 <th><?= $v["apply_from"];?></th>
 <th><?= date("Y-m-d",strtotime($v["create_date"]));?></th>
-<th><?= $v["firstname"];?></th>
-<th><?= $v["lastname"];?></th>
-</th>
-<th>
-<?php     if($v["filepath"] != "")
-    {
-        if($v["apply_from"] == "M")
-        {
-            $filename = str_replace("resumes/","",$v["filepath"]);
+<th><?= $v["firstname"]." ".$v["lastname"];?></th>
+<th><?= $v["candidate_mobile_number"];?></th>
+<th><?= $v["candidate_email"];?></th>
 
-        }elseif($v["apply_from"] == "B")
-        {
-            $filename = str_replace("bulkupload/","",$v["filepath"]);
-        }
-    }
-    else
-    {
-        $filename = "Not Available";
-    }
-
-?>
-
-
-    <?= $filename;?></th>
+<th><?php echo $v["filename"];?></th>
 <?php if($v["placed"] == 1){?>
    
     <th>Yes</th><?php }
         else{?>
     <th>No</th>
        <?php  }?>
-<th><a href="<?= base_url().$v["filepath"];?>" target="_blank">View</a></th>
+<th>
+<?php if($v["filepath"]!=""){?>
+    <a href="<?= base_url().$v["filepath"];?>" target="_blank">View</a><?php }else{?>No Preview<?php }?></th>
 
 </tr>
 
@@ -170,7 +155,7 @@ foreach($resume_data as $v) {
                 var checked_list = $('[name="selectedResume[]"]:checked').length;
                 //alert(checked_list);
                 if(checked_list == 0){
-                        alert("Please Select File. ");
+                        alert("Please Select Candidate. ");
                         return false;
                 }else if(checked_list > 12)
                     {

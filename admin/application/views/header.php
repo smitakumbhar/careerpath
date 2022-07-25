@@ -10,11 +10,11 @@
             <div class="top-nav ">
             <ul class="nav pull-right top-menu">
               
-               
+             
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                        
-                        <span class="username"><?php echo $_SESSION['user_name']; ?></span>
+                        <span class="username"><?php echo @$_SESSION['user_name']; ?></span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">

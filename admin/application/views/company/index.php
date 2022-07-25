@@ -99,11 +99,6 @@
                                             <tbody id="companies">
 <?php  $count= 1;
 foreach($company_data as $v) {
-    if($v["uploaded_files"]!=""){   
-        $filename = str_replace("company_details/","",$v["uploaded_files"]);
-    }else {
-        $filename = "Not Available";
-    }
    ?>
 <tr>
 <th><?php echo $count;?></th>
@@ -111,11 +106,23 @@ foreach($company_data as $v) {
 <th><?php echo $v["city"];?></td>
 <th><?php echo $v["industry_name"];?></th>
 <th><?php echo $v["website"];?></th>
-<th><a href="<?php echo base_url();?><?php echo $v["uploaded_files"];?>" target="_blank"><?= $filename;?></a></th>
+<th><?php if($v["uploaded_files"]!=""){   
+        $filename = str_replace("company_details/","",$v["uploaded_files"]);
+?>
+    <a href="<?php echo base_url();?><?php echo $v["uploaded_files"];?>" target="_blank"><?= $filename;?></a><?php }else {?>
+       Not Available
+   <?php  }?>
+</th>
 <th><a href="<?php echo base_url();?>company/edit/<?php echo $v["id"];?>">Edit</a></th>
 <th>
-
-<?php echo anchor( 'company/delete/'.$v["id"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));?></th>
+<?php if($v["uploaded_files"]!="")
+{
+        echo anchor( 'company/delete/'.$v["id"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));}
+else{
+ echo anchor( 'company/delete/'.$v["id"]."/".$page_no,lang("DELETE"),array("onclick"=>" return delete_function()"));
+}?>
+     
+ </th>
 
 </tr>
 

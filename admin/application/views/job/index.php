@@ -86,6 +86,7 @@
                                           
                                                     <th class='per'> Edit</th>
                                                     <th class="per"> Delete</th>
+                                                    <th class="per"> Resumes</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="jobs">
@@ -111,8 +112,7 @@
     }
         ?>
                                                     <tr>
-                                                   <!--  <th><?php //echo $record_no;?></th> -->
-                                                    <th><?php echo "JON-".$v["formID"];?></th>
+                                                       <th><?php echo "JON-".$v["formID"];?></th>
                                                     <th><?php echo $v["position"];?></th>
                                                     <th><?php echo $v["job_type"];?></th>
                                 <th><?php echo $v["date"];?></th>
@@ -128,8 +128,15 @@
 
                                                     </th>
  <th>
-<?php echo anchor( 'job/delete/'.$v["formID"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));?>
+    <?php if($v["job_desc"]!="")
+{
+        echo anchor( 'job/delete/'.$v["formID"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));}
+else{
+ echo anchor( 'job/delete/'.$v["formID"]."/".$page_no,lang("DELETE"),array("onclick"=>" return delete_function()"));
+}?>
+
    </th>
+   <th><?php  echo anchor('job/match_resumes/'.$v["formID"]."/nosearch",lang("MATCH_RESUMES"));?></th>
         
                                                 </tr>
 

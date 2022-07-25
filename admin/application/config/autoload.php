@@ -59,7 +59,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['libraries'] = array('form_validation','database','session','pagination','zip','send_pulse',);
+$autoload['libraries'] = array('form_validation','database','session','pagination','zip','send_pulse','elasticsearch');
 
 /*
 | -------------------------------------------------------------------
@@ -136,4 +136,4 @@ $autoload['language'] = array('message');
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$autoload['model'] = array('LoginModel','UserModel','JobModel','IndustryModel','DepartmentModel','CompanyModel','LocationModel','ResumeModel','EmailModel','CandidateModel','CommfuncModel');
+$autoload['model'] = array('LoginModel','UserModel','JobModel','IndustryModel','DepartmentModel','CompanyModel','LocationModel','ResumeModel','EmailModel','CandidateModel','CommfuncModel','RightsModel');

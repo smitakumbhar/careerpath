@@ -1,7 +1,11 @@
+ <?php
+            $rights = new RightsModel();
+            $admin_rights=$rights->checkAdminRights();
+?>
 
-
-    <section id="main-content" class="home" style="height: auto;">
+    <section id="main-content" class="home" style="height: auto;padding-left: 20px;">
     <section class="wrapper">
+    <?php if(@$_SESSION["user_type"] == "Super Admin" || in_array(1,$admin_rights)){?>
     <div class="adminApproval">
     <div class="row state-overview">
     <div class="col-lg-3 col-sm-6">
@@ -141,31 +145,25 @@
     <tr><th></th><th><?= lang("APPLICANT_RESUMES");?></th></tr>
     <?php
     $i =1 ;
-    foreach($resumes_data as $v){
-
-    if($v["apply_from"] == "M")
+    foreach($resumes_data as $v)
     {
-    $filename = str_replace("resumes/","",$v["filepath"]);
-
-    }elseif($v["apply_from"] == "B")
-    {
-    $filename = str_replace("bulkupload/","",$v["filepath"]);
-    }
-
-    if($i <= 5 ) {
-
-    ?>   <tr>
-    <td><?= $i; ?></td>
-    <td><a target='_blank' href="<?= base_url().$v["filepath"];?>"><?= $filename;?></a>
-    </td></tr>
-    <?php  }$i++;
-    } ?>
+        if($i <= 5 )
+        {?>   
+            <tr>
+                <td><?= $i; ?></td>
+                <td><a target='_blank' href="<?php echo base_url().$v["filepath"];?>"><?php echo $v["filename"];?></a>
+                </td>
+                </tr>
+        <?php  }
+        $i++;
+    }?>
 
     </tbody>
     </table>
     </div>
     </div>
     </div>
+    <?php }?> 
     </section>
     </section>
 

@@ -82,7 +82,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    <span id="back" class="redirect" title="<?php echo base_url();?>candidate/index/nosearch"><< <?= lang("VIEW_TEMPLATE");?></span><br><br>
+                                    <span id="back" class="redirect"><a href="<?php echo base_url();?>candidate/view_candidates/nosearch"><< <?= lang("VIEW_CANDIDATES");?></a></span><br><br>
                                    
                                 </header>
 

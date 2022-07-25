@@ -12,6 +12,7 @@ class LocationModel extends CI_Model
     	$this->db->order_by('location_name','asc'); 
 		$query = $this->db->get(TABLE_LOCATION);
 		$data_locations=$query->result_array();
+		//echo "<pre>";print_r($data_locations);
 		return $data_locations;
     }
     function location_list()

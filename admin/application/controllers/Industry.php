@@ -11,6 +11,9 @@ class Industry extends CI_Controller
 	
 	public function index($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -103,7 +106,10 @@ class Industry extends CI_Controller
 	}
 
 	public function add()
-	{
+	{	
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		
 		if( $this->input->post("flag")=="as")
 		{
@@ -144,8 +150,12 @@ class Industry extends CI_Controller
 	
 	}
 
-	function delete($id=NULL,$page_no=NULL)
+	public function delete($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -176,6 +186,10 @@ class Industry extends CI_Controller
 
 	public function edit($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$industry_model = new IndustryModel();
 		if( $this->input->post("flag")=="es")
 		{
@@ -218,10 +232,14 @@ class Industry extends CI_Controller
 
 	}
 
-	function change_paging($paging=NULL)
+	public function change_paging($paging=NULL)
 	{
 
-		 $_SESSION["sess_paging"]=$paging;
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("industry/index");
 	}
 

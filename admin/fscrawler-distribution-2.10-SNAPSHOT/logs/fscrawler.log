@@ -1,0 +1,9 @@
+15:08:52,124 INFO  [f.p.e.c.f.c.BootstrapChecks] Memory [Free/Total=Percent]: HEAP [98.4mb/1.9gb=4.96%], RAM [1gb/7.7gb=12.96%], Swap [8.2gb/24.5gb=33.78%].
+15:08:52,374 INFO  [f.p.e.c.f.FsCrawlerImpl] Starting FS crawler
+15:08:52,723 INFO  [f.p.e.c.f.c.ElasticsearchClient] Elasticsearch Client connected to a node running version 7.17.0
+15:08:52,756 INFO  [f.p.e.c.f.c.ElasticsearchClient] Elasticsearch Client connected to a node running version 7.17.0
+15:08:52,783 INFO  [f.p.e.c.f.FsParserAbstract] FS crawler started for [resumes] for [C:\xampp\htdocs\Careerpath\admin\resumes] every [15m]
+15:08:52,850 INFO  [f.p.e.c.f.t.TikaInstance] OCR is disabled.
+15:08:53,927 INFO  [f.p.e.c.f.FsParserAbstract] FS crawler is stopping after 1 run
+15:08:54,023 INFO  [f.p.e.c.f.FsCrawlerImpl] FS crawler [resumes] stopped
+15:08:54,024 INFO  [f.p.e.c.f.FsCrawlerImpl] FS crawler [resumes] stopped

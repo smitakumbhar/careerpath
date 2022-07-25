@@ -47,7 +47,8 @@
                                         </div>
                                 </div>
                                 <?php echo form_close();?>
-      
+
+
 <form method="post" name= "bulk_download" action="<?php echo base_url();?>resume/bulk_download">
                                  
                                             <label class="col-lg-11 col-sm-2"></label>
@@ -94,8 +95,8 @@
                                                     </th>
                                                     <th>Upload Type</th>
                                                     <th><i class="fa fa-calendar"></i> Date</th>
-                                                    <th><i class="fa fa-bookmark"></i> First Name</th>
-                                                    <th><i class="fa fa-bookmark"></i> Last Name</th>
+                                                    <th><i class="fa fa-bookmark"></i> Name</th>
+                                                    
 <!--                                                    <th><i class="fa fa-bookmark"></i> Job Type</th>-->
                                                     <th><i class="fa fa-bookmark"></i> Desk</th>
                                                     <th><i class="fa fa-bookmark"></i> Resume </th>
@@ -117,11 +118,10 @@ foreach($resume_data as $v) {
   ?>
 <tr>
 <th><?php echo $record_no;?></th>
- <th><input type="checkbox" name="selectedResume[]" id ="selectedResume[]" class="selectedResume" value=<?= $v["filepath"]; ?>></th>
+ <th><input type="checkbox" name="selectedResume[]" id ="selectedResume[]" class="selectedResume" value=<?= $v["filename"]; ?>></th>
 <th><?= $v["apply_from"];?></th>
 <th><?= date("Y-m-d",strtotime($v["create_date"]));?></th>
-<th><?= $v["firstname"];?></th>
-<th><?= $v["lastname"];?></th>
+<th><?= $v["firstname"]." ".$v["lastname"];?></th>
 <?php if($v["uploaded_admin"] == 0){?>
    
     <th><input type='button' class='addmydesk' rel = '" + obj.id + "' value='Add to my Desk' ></th><?php }
@@ -133,27 +133,7 @@ foreach($resume_data as $v) {
         ?><?php echo $user_name["user_name"]?></th>
        <?php  }?>
  </th>
-<th>
-<?php     if($v["filepath"] != "")
-    {
-        if($v["apply_from"] == "M")
-        {
-            $filename = str_replace("resumes/","",$v["filepath"]);
-
-        }elseif($v["apply_from"] == "B")
-        {
-            $filename = str_replace("bulkupload/","",$v["filepath"]);
-        }
-    }
-    else
-    {
-        $filename = "Not Available";
-    }
-
-?>
-
-
-    <?= $filename;?></th>
+<th><?php echo $v["filename"];?></th>
 <?php if($v["placed"] == 1){?>
    
     <th>Yes</th><?php }
@@ -163,18 +143,17 @@ foreach($resume_data as $v) {
 
 <th><a href="<?= base_url().$v["filepath"];?>" target="_blank">View</a></th>
  <th><?php echo anchor( 'resume/edit/'.$v["id"]."/".$page_no,lang("EDIT"));?></th>
- <th><?php echo anchor( 'resume/delete/'.$v["id"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));?></th>
+ <th>
+    <?php echo anchor( 'resume/delete/'.$v["id"]."/".$page_no."/".$v["filename"],lang("DELETE"), array("onclick"=>" return delete_function()"));
+?>        
+    </th>
 </tr>
 
 <?php  $record_no++;} ?>
                                            </tbody>
                                         </table>
                                         </div>
-                                      <?php if($msg_display1!="") {?>
-            <table align="center" ><tr>
-            <td colspan="4" align="center" valign="middle" ><?php echo $msg_display1;?></td>
-            </tr></table>  
-        <?php } ?>    
+                                     
 </form>
                                          <!-- Modal -- reset password -->
                                 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
@@ -224,9 +203,7 @@ foreach($resume_data as $v) {
 
     $("#ckbCheckAll").click(function(){ //alert("hii");
             $(".selectedResume").prop('checked',$(this).prop('checked'));
-            
-
-    });
+     });
 
     function checkfile()
     {
@@ -241,18 +218,6 @@ foreach($resume_data as $v) {
         }
     }
     
-</script>
-<script>
-    $('.default-date-picker').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: '-150y',
-        endDate: '+0d'
-    });
-     $('.default-date-picker1').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: '-150y',
-        endDate: '+0d'
-    });
 </script>
 
 <script type="text/javascript">

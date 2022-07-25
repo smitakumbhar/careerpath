@@ -114,7 +114,7 @@ class JobModel extends CI_Model
 		return true;
 	}
 
-	function get_jobID_list()
+	public function get_jobID_list()
 	{
 		$this->db->order_by('formID','asc'); 
 		$query = $this->db->get(TABLE_JOB_ORDER_FORM);
@@ -124,7 +124,7 @@ class JobModel extends CI_Model
 
     public function Storefiles($fileindex, $folder) 
 	{
-       
+       	$file_array= array();
         $arr = explode(".", $_FILES[$fileindex]["name"]);
         $finalname = str_replace(' ', '', $arr[0]);
         $imagename = $finalname . "." . $arr[1];
@@ -144,7 +144,9 @@ class JobModel extends CI_Model
         move_uploaded_file($_FILES[$fileindex]["tmp_name"], $finalpath);
 
         $returnpath = $folder . "/" . $imagename;
-        return $finalpath ;
+        $file_array["filename"] = $imagename;
+        $file_array["filepath"] = $finalpath;
+        return $file_array;
     }
 
      public function StoreMUlfiles2($fileindex, $folder)
@@ -178,7 +180,7 @@ class JobModel extends CI_Model
             }
             $cnt2++;
         }
-
+       
         return $finalpath ;
     }
 

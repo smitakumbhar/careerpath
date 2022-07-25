@@ -13,6 +13,10 @@ class Resume extends CI_Controller
 	public function index($msg=NULL)
 	{
 
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$msg_display="";
 		$msg_display1="";
 		$msg_err_display="";
@@ -29,7 +33,7 @@ class Resume extends CI_Controller
 				$msg_display=$this->lang->line("RESUME_EDIT_MSG");
 		}
 		
-		if($msg=="nosearch")
+		if($msg=="nosearch" || $this->uri->segment(4)!="")
 		{
 
 			$this->session->set_userdata('sess_search_wh4','');
@@ -137,7 +141,7 @@ class Resume extends CI_Controller
  		$total_count=$query->num_rows();
  	//	echo "hiii".$query->num_rows();
 
-		if( $this->input->post("flag")=="search" && $query->num_rows()==0)
+		if($this->input->post("flag")=="search" && $query->num_rows()==0)
 			$msg_display1=$this->lang->line("NO_RECORD_FOUND");
 		$segments = array('resume', 'index');
 		$url_name=site_url($segments);
@@ -160,7 +164,7 @@ class Resume extends CI_Controller
 
 	
 
-		$order_by=' ORDER BY id asc '; 
+		$order_by=' ORDER BY id desc '; 
 		
 		$sql=$main_sql.$where.$where1.$where2.$where3.$where4.$order_by.$limit;//die();
 		$query = $this->db->query($sql);
@@ -184,7 +188,12 @@ class Resume extends CI_Controller
 
 	public function add()
 	{
+		//echo "<pre>";print_r($_FILES);die();
+			//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		 $placed_check = 0;
+
 		if( $this->input->post("flag")=="as")
 		{
 
@@ -195,44 +204,70 @@ class Resume extends CI_Controller
 			{
 
 				$savefile = new JobModel();
-				$filepath = $savefile->Storefiles('upload','resumes');
+
+				$file_array = $savefile->Storefiles('upload','resumes');
+
+				$filepath = $file_array["filepath"];
+				$filename = $file_array["filename"];
+			//	"<pre>";print_r($file_array);
 
 			}
 			else{
-				$filepath = "";
+				$filepath=$this->input->post('old_file');
+				$filename=str_replace("resumes/","",$filepath);
 			}
 
 		$data = array(
 					"firstname" => $this->input->post("fname"),
 					 "lastname" => $this->input->post("lname"),
-                      "keywords" => $this->input->post("keywords"),
-					 "industry" => $this->input->post("industry"),
+					  "candidate_mobile_number" => $this->input->post("candidate_mobile_number"),
+					  "type_of_job" => $this->input->post("type_of_job"),
+	                      "keywords" => $this->input->post("keywords"),
+					 "industry_id" => $this->input->post("industry_id"),
+					  "location_id" => $this->input->post("location_id"),
                      "candidate_email" => $this->input->post("c_email"),
+                      "filename" => $filename,
                      "filepath" => $filepath,
                      "placed" => $placed_check,
                      "note" => $this->input->post("note"),
                      "jobnumber" => $this->input->post("jobnumber"),
                      "adminname" => $this->input->post("adminname"),
-                     "uploaded_admin" => $_SESSION['user_id'],
+                     "uploaded_admin" => @$_SESSION['user_id'],
                      "apply_from" => "M",
                      "create_date" => date('Y-m-d h:i:s'),
 					);
 			
-		$this->form_validation->set_rules('fname','First Name','trim|required');
-		$this->form_validation->set_rules('lname','Last Name','trim|required');
+	$this->form_validation->set_rules('fname','First Name','trim|required');
+	$this->form_validation->set_rules('lname','Last Name','trim|required');
+	$this->form_validation->set_rules('type_of_job','Type Of Job','required');
+	$this->form_validation->set_rules('c_email','Email','trim|required|valid_email');
+		$this->form_validation->set_rules('candidate_mobile_number','Mobile Number','trim|required|is_numeric');
+
+	$this->form_validation->set_rules('industry_id','Industry','required');
+	$this->form_validation->set_rules('location_id','Location','required');
+
+		if (empty($_FILES['upload']['name']) && $this->input->post('old_file') == "")
+		{
+		    $this->form_validation->set_rules('upload', 'File', 'required');
+		}
+
 		$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			
+		//	echo "<pre>";print_r($data);die();
 			$add_resume = new ResumeModel();
 			$result = $add_resume->AddResume($data);
+		
+			//Start fscrawler server to update index
+			$fscrawler = $this->elasticsearch->start_fscrawler();			
 			redirect('resume/index/0/add');
+
 		}	
 		$data["id"]=0;
 		$data["action_page"]="add";
 		$data["flag"]="as";
-		$data["filepath"]=$filepath;
+		$data["old_file"]=$filepath;
 			
 		}
 		else
@@ -240,13 +275,18 @@ class Resume extends CI_Controller
 			$data = array(
 							"firstname" => "",
 							"lastname" => "",
+							"candidate_mobile_number" =>"",
 							"keywords" => "",
-							"industry" => "",
+							"industry_id" => "",
+							"location_id" => "",
+							"type_of_job" => "",
 							"candidate_email" => "",
 							"filepath" => "",
+							"filename" => "",
 							"placed" =>"",
 							"note" => "",
 							"jobnumber" =>"",
+							"upload" => "",
 							"adminname" => "",
 							"flag" => "as",
 							"id" => 0,
@@ -258,6 +298,12 @@ class Resume extends CI_Controller
 		$data["job_order_list"] = $job_order_list->get_jobID_list();
 		$user_list = new UserModel();
 		$data["user_list"] = $user_list->getUsers();
+
+		$industry_list = new IndustryModel();
+		$data["industry_list"] = $industry_list->getIndustries();
+		$location_list = new LocationModel();
+		$data["location_list"] = $location_list->getLocations();
+
 		$data['page_no'] = 0;
 		$data['page_title'] = $this->lang->line("ADD_RESUMES");
 		$data['view_file'] = 'resumes/add';
@@ -268,6 +314,10 @@ class Resume extends CI_Controller
 
 	public function edit($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$this->session->set_userdata('sess_search_wh','');
 		$this->session->set_userdata('sess_keyword','');
 
@@ -287,17 +337,19 @@ class Resume extends CI_Controller
 
 			if(isset($_FILES['upload']["name"]) && !empty($_FILES['upload']["name"]))
 			   {
-			   		$savefile = new JobModel();
-					$new_filepath = $savefile->Storefiles('upload','resumes');
+					$savefile = new JobModel();
+					$file_array = $savefile->Storefiles('upload','resumes');
+					$new_filepath = $file_array["filepath"];
+					$filename = $file_array["filename"];
 
 			    if ($new_filepath)
 			    {
 			    	
 			    	$filepath= $new_filepath;
-			        $filename = $this->input->post('old_file');     
-			        if (file_exists($filename))
+			        $filename1 = $this->input->post('old_file');     
+			        if (file_exists($filename1))
 			        {
-			            unlink($filename);
+			            unlink($filename1);
 			          
 			        }
 			       
@@ -306,32 +358,52 @@ class Resume extends CI_Controller
 			   {
 			    
 			       $filepath=$this->input->post('old_file');
+			       $filename=str_replace("resumes/","",$filepath);
 
 			   }
 			}
 			else{
 			   $filepath=$this->input->post('old_file');
+			   $filename=str_replace("resumes/","",$filepath);
 
 			}
-
-			$data = array(
+//echo $filename;die();
+		$data = array(
 					"firstname" => $this->input->post("fname"),
-					 "lastname" => $this->input->post("lname"),
-                     "keywords" => $this->input->post("keywords"),
-					 "industry" => $this->input->post("industry"),
-                     "candidate_email" => $this->input->post("c_email"),
-                     "filepath" => $filepath,
-                     "placed" => $placed_check,
-                     "note" => $this->input->post("note"),
-                     "jobnumber" => $jobnumber,
-                     "adminname" => $this->input->post("adminname"),
-                     "uploaded_admin" => $_SESSION['user_id'],
-                     "apply_from" => "M",
-                     "create_date" => date('Y-m-d h:i:s'),
+					"lastname" => $this->input->post("lname"),
+					"candidate_mobile_number" => $this->input->post("candidate_mobile_number"),
+					"type_of_job" => $this->input->post("type_of_job"),
+					"keywords" => $this->input->post("keywords"),
+				 "industry_id" => $this->input->post("industry_id"),
+					  "location_id" => $this->input->post("location_id"),
+
+					"candidate_email" => $this->input->post("c_email"),
+					"filename" => $filename,
+					"filepath" => $filepath,
+					"placed" => $placed_check,
+					"note" => $this->input->post("note"),
+					"jobnumber" => $jobnumber,
+					"adminname" => $this->input->post("adminname"),
+					"uploaded_admin" => $_SESSION['user_id'],
+					"apply_from" => "M",
+					"create_date" => date('Y-m-d h:i:s'),
 					);
 			
 		$this->form_validation->set_rules('fname','First Name','trim|required');
 		$this->form_validation->set_rules('lname','Last Name','trim|required');
+		$this->form_validation->set_rules('type_of_job','Type Of Job','required');
+			$this->form_validation->set_rules('c_email','Email','trim|required|valid_email');
+		$this->form_validation->set_rules('candidate_mobile_number','Mobile Number','trim|required|is_numeric');
+
+			$this->form_validation->set_rules('industry_id','Industry','required');
+	$this->form_validation->set_rules('location_id','Location','required');
+
+
+		if (empty($_FILES['upload']['name']) && $this->input->post('old_file') == "")
+		{
+		    $this->form_validation->set_rules('upload', 'File', 'required');
+		}
+
 		$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
 
 
@@ -339,11 +411,13 @@ class Resume extends CI_Controller
 			{
 				
 				$result = $resume_data->update($data, $id);
+				// start the fscrawler to update index
+				$fscrawler = $this->elasticsearch->start_fscrawler();			
 				redirect('resume/index/0/edit');
 			}
 			$data["action_page"]="edit";
 			$data["flag"]="es";
-			$data["job_desc"]=$filepath;
+			$data["old_file"]=$filepath;
 			$data["formID"]=$this->input->post("formID");
 		}
 		else
@@ -367,6 +441,11 @@ class Resume extends CI_Controller
 		$data["job_order_list"] = $job_order_list->get_jobID_list();
 		$user_list = new UserModel();
 		$data["user_list"] = $user_list->getUsers();
+		$industry_list = new IndustryModel();
+		$data["industry_list"] = $industry_list->getIndustries();
+		$location_list = new LocationModel();
+		$data["location_list"] = $location_list->getLocations();
+
 		$data['page_title'] = $this->lang->line("EDIT_RESUME");
 		$data['view_file'] = 'resumes/add';
 		$this->load->view('layout',$data);
@@ -375,6 +454,10 @@ class Resume extends CI_Controller
 
 	function delete($id=NULL,$page_no=NULL,$filename=Null)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -399,45 +482,27 @@ class Resume extends CI_Controller
 					$page_no=0;
 				}
 
-				if($filename != "Not Available")
+				// delete file from folder
+				$path = RESUMES_FOLDER. $filename;
+				while (file_exists($path))
 				{
-					$path = base_url()."resumes/" . $filename;
-					while (file_exists($path))
-					{
-						unlink($path);
-			         
-			        }//end of while
-			    }
+					unlink($path);
+		    }//end of while
 
+		    // start the fscrawler to update index
+   			$fscrawler = $this->elasticsearch->start_fscrawler();			
 				redirect('resume/index/'.(int)$page_no."/d");
 		}		
 	}
 
-	public function view_my_desk()
-	{
-		
-		$data['page_title'] = $this->lang->line("VIEW_MY_DESK");
-		$data['view_file'] = 'resumes/view_my_desk';
-		$this->load->view('layout',$data);
-	}
-	
-	public function view_usersdesk(){
-		//echo "hii";
-		$this->load->view("resumes/view_usersdesk");
-		
-	}
-	
-	public function search(){
-		//echo "hii";
-		$this->load->view("search/search");
-		
-	}
-
 	public function bulk_download()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display1="";
-		$resume_array = Array();
+		$resume_array = array();
 	
 		if(isset($_POST['resumes_download'])) 
 		{
@@ -447,7 +512,7 @@ class Resume extends CI_Controller
 				foreach($_POST['selectedResume'] as $selectedfile)
 				{
 
-					if (file_exists($selectedfile) && $selectedfile != "." && $selectedfile != "..") 
+					if (file_exists(RESUMES_FOLDER.$selectedfile) && $selectedfile != "." && $selectedfile != "..") 
 					 {
 					       array_push($resume_array, "$selectedfile");
 					 }
@@ -464,6 +529,9 @@ class Resume extends CI_Controller
 
 	public function bulk_upload()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$upload_failed="";
 		$fields = array();
@@ -472,30 +540,37 @@ class Resume extends CI_Controller
       	{
 		
 	        $this->form_validation->set_rules('file','','callback_filecheck');
-			$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
+					$this->form_validation->set_error_delimiters('<div id="valid_error">','</div>');
 
 			if($this->form_validation->run() == TRUE)
 			{
 			
-			    foreach ($_FILES as $key => $value)
-			        {
+				foreach($_FILES as $key => $value)
+		        {
 
-			            $savefile = new JobModel();
-			            $filepath = $savefile->StoreMUlfiles2($key,'bulkupload');
-			        }
+		            $savefile = new JobModel();
+		            $filepath = $savefile->StoreMUlfiles2($key,'resumes');
 
-			        foreach ($_POST as $key => $value)
-			        {
-			            $fields[$key] = $value;
-			        }
-			       	$forms = new ResumeModel();
-			   		$status = $forms->UploadMulResumeDetails($fields, $filepath);
+		        }
 
-			   		if($status != false)
-					{
-						redirect(base_url('resume/index/nosearch'));
-						
-					}
+	         // start the fscrawler to update index
+		   		$fscrawler = $this->elasticsearch->start_fscrawler();	
+			
+
+		        foreach ($_POST as $key => $value)
+		        {
+		            $fields[$key] = $value;
+		        }
+
+
+				$forms = new ResumeModel();
+				$status = $forms->UploadMulResumeDetails($fields, $filepath);
+
+				if($status != false)
+				{
+					redirect(base_url('resume/index/nosearch'));
+					
+				}
 			}
 		} // end of if
 
@@ -507,7 +582,14 @@ class Resume extends CI_Controller
 
 	public function filecheck()
 	{
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
        
+     //check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		$count = count(array_filter($_FILES['file']['name']));
 	
 		if($count == 0)
@@ -522,13 +604,19 @@ class Resume extends CI_Controller
 
 	public function change_paging($paging=NULL)
 	{
-
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 		$_SESSION["sess_paging"]=$paging;
-	    redirect("resume/index");
+	  redirect("resume/index");
 	}
 	// for bulk filelist
 	public function bulk_filelist()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($this->input->post("flag") == "export")
 		{
 			$dir = "./bulkupload";

@@ -40,14 +40,17 @@ class Login extends CI_Controller
 
 			if ($this->form_validation->run() == TRUE)
 			{
-					$register_user = new LoginModel();
-
-					if( $register_user->signin($data))
-					{
-						redirect(base_url('home/index')); 
-					}
+				$register_user = new LoginModel();
+				// fetch data using user email
+				if( $register_user->signin($data))
+				{
+					if($_SESSION["admin_paasword_status"] == "N")
+						redirect('home/change_password'); 
 					else
-					$login_failed=$this->lang->line("LOGIN_FAILED");
+						redirect(base_url('home/index')); 
+				}
+				else
+					$login_failed=$this->lang->line("LOGIN_FAILED");				
 			}
 		}
 
@@ -58,8 +61,11 @@ class Login extends CI_Controller
 	}
 
 	public function getSingleUser()
-	 {
-	 	//echo "hiii".$_POST["user_id"];die();
+	{
+	 			//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 	    $this->db->select('*');
 		$this->db->where('user_id',$_POST["user_id"]);
 		$this->db->from('backend_users_master');

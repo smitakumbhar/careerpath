@@ -6,11 +6,15 @@ class User extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
-		$this->load->model('UselModel', 'user_model');
+		if (session_id() == "") session_start();
 	}
 
 	public function index($msg=NULL)
 	{
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -105,9 +109,11 @@ class User extends CI_Controller
 
 	public function add()
 	{
-		//echo "hii";die();
-		//check admin session
-		$this->LoginModel->checkAdminLogin();
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if( $this->input->post("flag")=="as")
 		{
 				$user_name = $this->input->post("user_name");
@@ -172,7 +178,10 @@ class User extends CI_Controller
 	//-----------change status for admin approval
 	public function change_status()
 	{   
-		
+				//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 	$data_users = array(
 					'user_id' => $this->input->post("user_id"),
 					'admin_approval' =>$this->input->post("admin_approval"),
@@ -185,14 +194,25 @@ class User extends CI_Controller
 
 	function delete($id=NULL,$page_no=NULL)
 	{
+				//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
 					$nextrecord = 0 ;
 				else
 					$nextrecord = ($page_no-1) * @$_SESSION["sess_paging"] ;
+
+				// delete admin user
 				$user = new UserModel();
 				$user->delete($id);
+
+				//delete rights assigned to user
+				$rights = new RightsModel();
+				$rights->deleteRights($id);
+				
 
 				//when we deleting records on second page, once we delete last entry on second page it should shift to 1st after deleting.
 				if(@$_SESSION["sess_search_wh"]!="")
@@ -214,6 +234,10 @@ class User extends CI_Controller
 
 	public function edit($id=NULL,$page_no=NULL)
 	{
+				//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		//echo "<pre>";print_r($_POST);die();
 		$view_user= new UserModel();
 		if( $this->input->post("flag")=="es")
@@ -277,8 +301,11 @@ class User extends CI_Controller
 
 	function change_paging($paging=NULL)
 	{
+				//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		 $_SESSION["sess_paging"]=$paging;
+		$_SESSION["sess_paging"]=$paging;
 	    redirect("user/index");
 	}
 	

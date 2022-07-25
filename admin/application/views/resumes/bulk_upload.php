@@ -1,69 +1,26 @@
-
-
-		<style>
-        	.jobf{
-				width:50%;
-				margin:1px auto;
-               background-color: #ebebeb;
-
-			}
-			
-                        .btn.btn-success.fileinput-button {
-                            background-color: #6dbb4a;
-                            margin-left: 2.5%;
-                            margin-top: 1%;
-                        }
-                          #addinputtag{
-                         float:left;width:74%;
-                         }
-                         input[type=file] {
-                            margin-top: 5px;
-                            margin-bottom: 5px;
-                         }
-                         .ui-widget-header{
-                             background-color: #3c763d !important;
-                         }
-                         .ui-progressbar.ui-widget.ui-widget-content.ui-corner-all{
-                             width: 70%;
-                             margin: 0 auto;
-                         }
-                         #resume_name{
-                              background-color: #dff0d8;
-                              color: #3c763d;
-                              width: 70%;
-                              margin: 0 auto;
-                              padding-left: 10px;
-
-                         }
-                          #resume_update_failed_name{
-                                background-color: #f2dede;
-                                color: #a94442;
-                                width: 70%;
-                                margin: 0 auto;
-                                padding-left: 10px;
-                         }
-                          .loader {
-  border: 4px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 4px solid #3498db;
-  width: 40px;
-  height: 40px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-  float: right;
+<style>
+.jobf
+{
+    width:50%;
+    margin:1px auto;
+    background-color: #ebebeb;
 }
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+.btn.btn-success.fileinput-button
+{
+    background-color: #6dbb4a;
+    margin-left: 2.5%;
+    margin-top: 1%;
 }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+#addinputtag
+{
+    float:left;width:74%;
 }
-
-        </style>
+input[type=file]
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}              
+</style>
         
             <!--main content start-->
             <section id="main-content">
@@ -93,8 +50,6 @@
                                                 <input type="file" name="file[]" multiple id="upload">
                                             </div>
                                         </div>
-                <!-- ____________________ 12 june code added here____________________ -->
-
 
                                         <div class="form-group">
                                             <div class="col-lg-10">
@@ -120,9 +75,15 @@
 
 function checkfile()
 {
-    if(document.getElementById("upload").files.length > 20)
+   /* if(document.getElementById("upload").files.length > 20)
     {
              alert("Upload Limit is 20 Only!!");
+             return false;
+    }*/
+
+    if(document.getElementById("upload").files.length > 75)
+    {
+             alert("Upload Limit is 75 Only!!");
              return false;
     }
 

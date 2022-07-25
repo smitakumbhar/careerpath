@@ -6,9 +6,13 @@ class Desk extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
+		if(session_id() == "") session_start();
 	}
 	public function userdesk($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -112,6 +116,9 @@ class Desk extends CI_Controller
 
 	public function mydesk($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -267,17 +274,23 @@ class Desk extends CI_Controller
 	
 	}
 
-	function change_paging($paging=NULL)
+	public function change_paging($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		$_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("desk/mydesk");
 	}
 
-	function change_paging_user($paging=NULL)
+	public function change_paging_user($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		$_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("desk/userdesk");
 	}
 

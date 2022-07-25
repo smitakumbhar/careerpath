@@ -97,30 +97,10 @@ foreach($resume_data as $v) {
 <tr>
 <th><?php echo $record_no;?></th>
  <th><?php echo date("Y-m-d",strtotime($v["create_date"]));?></th>
-<th><?= $v["firstname"];?></th>
+<th><?php echo $v["firstname"];?></th>
 <th><?= $v["lastname"];?></th>
 <th>Desk</th>
-<th>
-<?php     if($v["filepath"] != "")
-    {
-        if($v["apply_from"] == "M")
-        {
-            $filename = str_replace("resumes/","",$v["filepath"]);
-
-        }elseif($v["apply_from"] == "B")
-        {
-            $filename = str_replace("bulkupload/","",$v["filepath"]);
-        }
-    }
-    else
-    {
-        $filename = "Not Available";
-    }
-
-?>
-
-
-    <?= $filename;?></th>
+<th><?php echo $v["filename"];?></th>
 
 <?php if($v["placed"] == 1){?>
    
@@ -131,7 +111,7 @@ foreach($resume_data as $v) {
 
 <th><a href="<?= base_url().$v["filepath"];?>" target="_blank">View</a></th>
  <th><?php echo anchor( 'resume/edit/'.$v["id"]."/".$page_no,lang("EDIT"));?></th>
- <th><?php echo anchor( 'resume/delete/'.$v["id"]."/".$page_no."/".$filename,lang("DELETE"),array("onclick"=>" return delete_function()"));?></th>
+ <th><?php echo anchor( 'resume/delete/'.$v["id"]."/".$page_no."/".$v["filename"],lang("DELETE"),array("onclick"=>" return delete_function()"));?></th>
  <th>Remove My Desk</th>
 </tr>
 

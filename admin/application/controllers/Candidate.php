@@ -6,10 +6,14 @@ class Candidate extends CI_Controller
 	public function __consrturt()
 	{
 		parent::__construct();
+		if(session_id() == "") session_start();
 	}
 	
 	public function index($msg=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -102,7 +106,10 @@ class Candidate extends CI_Controller
 
 	public function add()
 	{
-		
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if( $this->input->post("flag")=="as")
 		{
 			$data = array(
@@ -154,6 +161,10 @@ class Candidate extends CI_Controller
 
 	function delete($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		if($id)
 		{
 				if( empty($page_no) || ( $page_no<1 ) )
@@ -182,6 +193,10 @@ class Candidate extends CI_Controller
 
 	public function edit($id=NULL,$page_no=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$candidate_model = new CandidateModel();
 		if( $this->input->post("flag")=="es")
 		{
@@ -233,7 +248,10 @@ class Candidate extends CI_Controller
 
 	public function sendmail()
 	{
-		//echo $email =$this->input->post("email");die();
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$template_list = new EmailModel();
 
 		if( $this->input->post("flag")=="as")
@@ -293,6 +311,10 @@ class Candidate extends CI_Controller
 
 	public function get_candidate()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$id = $this->input->post("id");
 		if($id)
 		{ 
@@ -303,16 +325,23 @@ class Candidate extends CI_Controller
 		}	
 	}
 
-	function change_paging($paging=NULL)
+	public function change_paging($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		$_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("candidate/index");
 	}
 
 	// option number 7 from CRM
 	public function view_candidates($msg=NULL)
 	{
+
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
 		$msg_display="";
 		$msg_display1="";
@@ -397,6 +426,10 @@ class Candidate extends CI_Controller
 	// send bulk mail to candidates
 	public function send_bulkmail()
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
+
 		$template_list = new EmailModel();
 
 		if( $this->input->post("flag")=="as")
@@ -470,11 +503,15 @@ class Candidate extends CI_Controller
 		$this->load->view('layout',$data);
  		
 	}
-// paging for mail
-	function change_paging_mail($paging=NULL)
+	
+	// paging for mail
+	public function change_paging_mail($paging=NULL)
 	{
+		//check admin is login
+		$this->load->model('Commfuncmodel');
+		$this->Commfuncmodel->checkAdminLogin();
 
-		$_SESSION["sess_paging"]=$paging;
+		@$_SESSION["sess_paging"]=$paging;
 	    redirect("candidate/view_candidates");
 	}
 }

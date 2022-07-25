@@ -5606,3 +5606,12 @@ font-weight:bold;
     background-color:#342f29;
     color:#FFF
 }
+.modules tr {
+ border-bottom: 1pt solid #E0E0E0;
+    font-size: 14px; 
+    font-family: arial;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left:0px;
+    
+}

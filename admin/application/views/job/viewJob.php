@@ -5,7 +5,7 @@
 				width:88% !important;
 				margin:1px auto;
 			background-color: #ebebeb;
- /*         background-color: #FFE8D5;*/
+/*                                  background-color: #FFE8D5;*/
 
 				padding-left:80px;
 				padding-top:15px;
@@ -32,12 +32,12 @@
 			}
         </style>
 
-       
+      
 
-   
-
-        <section id="container">
-             <section id="main-content">
+        <section id="container" class="">
+           
+          
+            <section id="main-content">
                 <section class="wrapper">
                     <!-- page start-->
 
@@ -45,7 +45,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">
-                                	<span><a href="<?php echo base_url(); ?>job/index/nosearch"><< View Job list</a></span><br><br>
+                                	<span id="back"><a href="<?php echo base_url();?>job/index/nosearch"><< View Job List</a></span><br>
                                     
                                 </header>
 
@@ -78,7 +78,7 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                             <label for="industry" class="col-lg-10">Industry</label>
                                             <div class="col-lg-10">
                                                     <select id="industry" name="industry" class="form-control m-bot15" disabled>
-                                                        <option value="">Select Industry</option>
+                                                        <option>Select Industry</option>
  <?php foreach($industry_list as $industry){
  ?>
                    <option value="<?= $industry['id']; ?>" 
@@ -122,7 +122,7 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                             <label for="company_name" class="col-lg-10">Company Name</label>
                                             <div class="col-lg-10">
                                                 <select id="company_name" name="company_name" class="form-control m-bot15"  disabled >
- <option value="">Select Company</option>
+ <option>Select Company</option>
  <?php foreach($company_list as $company){
  ?>
                    <option value="<?= $company['id']; ?>" 
@@ -179,11 +179,11 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                             <label id="upf" for="upload" class="col-lg-11">File for Job Description/Duties</label>
                                             <div class="col-lg-10" id="showfile"></div>
 
-                                          
+                                          <?php if($job_data['job_desc']!=""){?>
                                             <div class="col-lg-10" id="dwn">
-                               <a href="<?php echo base_url()?><?=$job_data['job_desc']?>" target= _blank>                <?php 
+                               <a href="<?php echo base_url()?><?= $job_data['job_desc'];?>" target= _blank>                <?php 
                                           $filename = str_replace("description/","",$job_data["job_desc"]);                echo $filename; ?> </a> 
-                                            </div>
+                                            </div><?php }?>
                                         </div>
                                         <div class="col-lg-12">
                                         	<label for="reason" class="col-lg-11">Reason position is open</label>
@@ -260,14 +260,19 @@ foreach(JOB_TYPE_ARRAY as $key => $jobtype){
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            
+                                        </div>
                                     </form>
                                     </div>
                                 </div>
-                               
+                                <div id="message">
+
+                                </div>
                             </section>
                         </div>
                     </div>
                     <!-- page end-->
                 </section>
             </section>
-           
+          

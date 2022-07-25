@@ -6,7 +6,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">
-                                	<span id="back" class="redirect" title="<?php echo base_url();?>home/index"><< <?= lang("HOME");?></span>&nbsp;<br><br>
+                                	<span id="back" class="redirect"><a href="<?php echo base_url();?>home/index"><< <?= lang("HOME");?></a></span>&nbsp;<br><br>
                                     <span class="pagelbl"><?= lang("DIGITAL_VERSION_FORMS");?></span><br><br>
                                 </header>
 

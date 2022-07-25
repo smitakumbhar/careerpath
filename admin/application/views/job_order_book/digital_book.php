@@ -106,12 +106,19 @@ div.flip-control button {
     <div class="hard">
        
             <img src="<?php echo base_url();?>images/logo.png" width="50%" style= "margin-top: 20px; margin-left: 100px;" />
-            
+        <?php if($_SESSION['job_order_book_title']!=""){?>
+            <table style="margin-top:70px;font-size: 50px;"  align="center">
+            <tr><td align="center" style="font-size:70px;"><?php echo $_SESSION['job_order_book_title'];?></td></tr>
+             <tr><td style="font-size:70px;">&nbsp;</td></tr>
+            <tr><td align="center" style="font-size:70px;">&nbsp;</td></tr>
+        </table>
+        <?php }else{?>
          <table style="margin-top:70px;font-size: 50px;"  align="center">
             <tr><td align="center" style="font-size:70px;">JOB</td></tr>
              <tr><td style="font-size:70px;">ORDER</td></tr>
             <tr><td align="center" style="font-size:70px;">BOOK</td></tr>
         </table>
+    <?php }?>
         <div style="text-align:center;margin-top:110px; font-size: 10px;font-family: arial">&copy; Copyright Careerpaths NW</div>
     </div> 
     <div class="hard"></div>
@@ -166,7 +173,7 @@ div.flip-control button {
     <a href="#" id="prev"> Previous </a>
     <a href="#" id="next"> Next </a>
     <a href="<?php echo base_url();?>job/download_book" id="download"> Download Book </a>
-    <a href="#" id="share" onclick="linkopen();"> Share Book </a>
+    <a href="<?php echo base_url();?>job/share_book" target="_blank"> Share Book </a>
     <a href="<?php echo base_url();?>job/job_order_book" id="back"> Back </a>
  </div>
 
@@ -193,13 +200,6 @@ $("#next").click(function(e){
 });
 
 </script>
-<script type="text/javascript">
-   function linkopen() {
-  //  event.preventDefault();
-    window.open("<?php echo base_url();?>job/share_book", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400,margin-right=20");
-    return false;
-}
 
-</script>
 </body>
 </html>

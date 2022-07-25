@@ -57,7 +57,7 @@ class EmailModel extends CI_Model
 	{
 		foreach($array as $key => $value)
 		{
-			$this->zip->read_file($value);
+			$this->zip->read_file(RESUMES_FOLDER.$value);
 
 		}
 	   // Save the zip file to archivefiles directory

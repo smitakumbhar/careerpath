@@ -78,7 +78,7 @@
                                                     <th><?php echo $record_no;?></th>
                                                     <th><?php echo $v["user_name"];?></th>
                                                     <th><?php echo $v["user_email"];?></th>
-                                                    <th><?php echo anchor( 'user/edit/'.$v["user_id"]."/".$page_no,lang("EDIT"));?>
+                                                    <th><?php echo anchor( 'rights/edit/'.$v["user_id"]."/".$page_no,lang("EDIT"));?>
                                                    </th>
                                                     <th><?php echo anchor( 'user/delete/'.$v["user_id"]."/".$page_no,lang("DELETE"),array("onclick"=>" return delete_function()"));?>
                                                    </th>
@@ -118,7 +118,7 @@
 <script type="text/javascript">
 function addUser()
 {
-   window.location="<?= base_url();?>user/add/";
+   window.location="<?= base_url();?>rights/add/";
 }
 
 function Paging(paging)

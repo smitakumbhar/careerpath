@@ -12,7 +12,7 @@
                             <section class="panel">
                                 <header class="panel-heading">
                                 	<span id="back" class="redirect" title="<?php echo base_url();?>dashboard"><< Home</span>&nbsp;<br>
-                                    <span class="pagelbl"><?= lang("CANDIDATE_LIST");?></span><br><br>
+                                   
                                   
                                 </header>
   <?php echo form_open('candidate/view_candidates');?>

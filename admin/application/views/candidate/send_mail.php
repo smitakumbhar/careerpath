@@ -82,7 +82,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    <span id="back" class="redirect" title="<?php echo base_url();?>email/index"><< <?= lang("VIEW_TEMPLATE");?></span><br><br>
+                                    <span id="back" class="redirect"><a href="<?php echo base_url();?>candidate/index/nosearch"><< <?= lang("VIEW_CANDIDATES");?></a></span><br><br>
                                    
                                 </header>
 
@@ -115,7 +115,7 @@
                                                  <option value="">Select Candidate</option>
  <?php foreach($candidate_list as $candidate)
  {?>
-                   <option value="<?= $candidate['id']; ?>"> <?= $candidate['first_name']." ".$candidate['last_name']; ?> </option>
+                   <option value="<?= $candidate['id']; ?>"> <?= $candidate['firstname']." ".$candidate['lastname']; ?> </option>
                <?php }?>       
                                                     </select>
                                             </div>
